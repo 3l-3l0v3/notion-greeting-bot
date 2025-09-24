@@ -28,7 +28,7 @@ else:
 notion.pages.update(
     PAGE_ID,
     properties={
-        "Name": {  # Replace "Name" with your row's title property if different
+        "Greeting": {  # Replace "Name" with your row's title property if different
             "title": [{"text": {"content": greeting}}]
         }
     }
