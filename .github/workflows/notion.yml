@@ -1,0 +1,26 @@
+name: Update Notion Greeting
+
+on:
+  schedule:
+    - cron: "0 9,12,17,21 * * *"  # 9AM, 12PM, 5PM, 9PM UTC
+  workflow_dispatch:              # allows manual trigger
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run script
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          PAGE_ID: ${{ secrets.PAGE_ID }}
+        run: python update_greeting.py
