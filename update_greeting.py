@@ -1,35 +1,37 @@
+# update_greeting.py
+
 import os
-from notion_client import Client
 from datetime import datetime
-import pytz
+from notion_client import Client
 
-# Secrets from GitHub
-NOTION_TOKEN = os.getenv("NOTION_TOKEN")
-PAGE_ID = os.getenv("PAGE_ID")
+# Load secrets from environment (GitHub Actions)
+NOTION_TOKEN = os.environ["NOTION_TOKEN"]
+PAGE_ID = "278b3ee4-0ced-80b4-9b6f-c066d09931cb"  # Your page ID formatted with hyphens
 
+# Initialize Notion client
 notion = Client(auth=NOTION_TOKEN)
 
-# Time in Gainesville (Eastern)
-tz = pytz.timezone("America/New_York")
-now = datetime.now(tz)
+# Determine greeting based on current time (Gainesville timezone)
+now = datetime.now()  # local time; adjust if needed for Gainesville
 hour = now.hour
 
 if 5 <= hour < 12:
     greeting = "Good Morning, Gainesville"
 elif 12 <= hour < 17:
     greeting = "Good Afternoon, Gainesville"
-elif 17 <= hour < 21:
+elif 17 <= hour < 22:
     greeting = "Good Evening, Gainesville"
 else:
     greeting = "See You Tomorrow, Gainesville"
 
+# Update the **title** of the page
 notion.pages.update(
     PAGE_ID,
     properties={
-        "Greeting": {
+        "Name": {  # Replace "Name" with your row's title property if different
             "title": [{"text": {"content": greeting}}]
         }
     }
 )
 
-print(f"Updated Notion row with: {greeting}")
+print(f"Greeting updated to: {greeting}")
