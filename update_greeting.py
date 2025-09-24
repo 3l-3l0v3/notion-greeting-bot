@@ -4,15 +4,15 @@ import os
 from datetime import datetime
 from notion_client import Client
 
-# Load secrets from environment (GitHub Actions)
+# Load Notion token from environment variable
 NOTION_TOKEN = os.environ["NOTION_TOKEN"]
-PAGE_ID = "278b3ee4-0ced-80b4-9b6f-c066d09931cb"  # Your page ID formatted with hyphens
+PAGE_ID = "278b3ee4-0ced-80b4-9b6f-c066d09931cb"  # Your page (row) ID with hyphens
 
 # Initialize Notion client
 notion = Client(auth=NOTION_TOKEN)
 
-# Determine greeting based on current time (Gainesville timezone)
-now = datetime.now()  # local time; adjust if needed for Gainesville
+# Determine greeting based on Gainesville time
+now = datetime.now()  # adjust if your server is in a different timezone
 hour = now.hour
 
 if 5 <= hour < 12:
@@ -24,12 +24,14 @@ elif 17 <= hour < 22:
 else:
     greeting = "See You Tomorrow, Gainesville"
 
-# Update the **title** of the page
+# Update the "Greeting" column as a Rich Text property
 notion.pages.update(
     PAGE_ID,
     properties={
-        "Greeting": {  # Replace "Name" with your row's title property if different
-            "title": [{"text": {"content": greeting}}]
+        "Greeting": {
+            "rich_text": [
+                {"text": {"content": greeting}}
+            ]
         }
     }
 )
