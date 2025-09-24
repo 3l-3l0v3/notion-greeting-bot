@@ -27,7 +27,7 @@ notion.pages.update(
     PAGE_ID,
     properties={
         "Greeting": {
-            "title": [{"text": {"content": greeting}}]
+            "rich_text": [{"text": {"content": greeting}}]
         }
     }
 )
